@@ -10,6 +10,7 @@ save_path = '/home/pi/Serial/data/'
 log_save_path = '/home/pi/Serial/log/'
 event_log_save_path = '/home/pi/Serial/events/'
 filename = str(time.strftime("%Y-%m-%d %H:%M:%S")) + '.txt'
+model_path = '/home/pi/Serial/model/'
 
 ## Serial connection params
 BAUDrate = 38400
