@@ -1,0 +1,17 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data files
+data/
+log/
+events/
+retro/
+
+# Vscode files
+.vscode/
+
+# Log files
+myapp.log
+application/RMs.txt
