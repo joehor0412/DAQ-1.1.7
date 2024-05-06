@@ -233,9 +233,10 @@ class MyApp(QMainWindow,Ui_Main,LogMixin):
 
 
     def display_RMs(self,data):
-        """ Display RMs info on GUI. """
+        """ Display RMs along with the MV mode info on GUI. """
         self.stream_label_remote.setText(data[0])
         self.stream_label_local.setText(data[1])
+        self.stream_label_ml.setText(data[2])
         
         
     
@@ -279,6 +280,7 @@ class MyApp(QMainWindow,Ui_Main,LogMixin):
         self.startbtn.setStyleSheet("QPushButton:pressed#startbtn{background-color:#2F6643} QPushButton:disabled#startbtn{background-color:#ACD3BA} QPushButton#startbtn{background-color: #499F68;color: white;font-weight:bold;border: 1px solid #8f8f91;border-radius: 6px;}")
         self.stream_label_remote.setText("__._")
         self.stream_label_local.setText("__._")
+        self.stream_label_ml.setText("---")
         device_status = "connected"
 
 

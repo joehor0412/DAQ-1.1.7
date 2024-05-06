@@ -10,6 +10,10 @@ import numpy as np
 import logging
 import math
 
+# For the machine learning section
+import keras
+from keras.models import load_model
+
 
 class Worker(QObject):
     """
@@ -114,12 +118,14 @@ class Worker(QObject):
                     # Respiratory mechanics calculation
                     try:
                         Ers, Rrs, PEEP, PIP, TidalVolume, IE, VE = self.calc_RM(sck_pressure,sck_flow)
+                        # mv_mode = self.calc_MV_mode(sck_pressure,sck_flow)      # produce the MV mode
+                        # self.RMs_display.emit([str(Ers),str(Rrs),mv_mode])
                         self.RMs_display.emit([str(Ers),str(Rrs),breath_number])
                         timenow = str(time.strftime("%d-%m-%y %H:%M:%S"))
                         # Try save in a text file
                         try:
                             with open("Mechanics.txt", "a+") as f:
-                                f.write(f"{timenow} - {breath_number} - {Ers},{Rrs}\n")
+                                f.write(f"{timenow} - {breath_number} - {mv_mode} - {Ers},{Rrs},MV mode (PC=0,VC=1)\n")
                         except:
                             pass
                     except:
@@ -199,6 +205,25 @@ class Worker(QObject):
        
 
         return Ers, Rrs, PEEP, PIP, TidalVolume, IE, VE
+    
+    def calc_MV_mode(self, P, Q):
+        """ Obtain the MV mode from the CNN """
+        current_path = os.getcwd()
+        os.chdir(model_path)
+        cnn_model = load_model("Model11")
+        os.chdir(current_path)
+        mv_mode = 1
+        
+        print(len(P))
+        print(len(Q))
+        
+        # results = cnn_model.predict([P,Q])
+        # if results.count(1) => results.count(0):
+        #       mv_mode = 1
+        # elif results.count(0) > results.count(1):
+        #       mv_mode = 0
+        
+        return mv_mode
 
     def _seperate_breath(self, temp_pressure, temp_flow):
         """Seperate breath to inspiration and expiration"""

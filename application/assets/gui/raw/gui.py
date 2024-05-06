@@ -178,38 +178,51 @@ class Ui_MainWindow(object):
         self.stream_groupBox.setObjectName("stream_groupBox")
 
         self.stream_pic_label = QtWidgets.QLabel(self.stream_groupBox)
-        self.stream_pic_label.setGeometry(QtCore.QRect(10, 30, 31, 20))
+        self.stream_pic_label.setGeometry(QtCore.QRect(10, 30, 31, 10))
         self.stream_pic_label.setObjectName("stream_pic_label")
-        self.stream_pic_label.setStyleSheet("color: #393939;font:15px bold")
+        self.stream_pic_label.setStyleSheet("color: #393939;font:10px bold")
 
         self.stream_pic_label_2 = QtWidgets.QLabel(self.stream_groupBox)
-        self.stream_pic_label_2.setGeometry(QtCore.QRect(10, 60, 41, 20))
+        self.stream_pic_label_2.setGeometry(QtCore.QRect(10, 50, 31, 10))
         self.stream_pic_label_2.setObjectName("stream_pic_label_2")
-        self.stream_pic_label_2.setStyleSheet("color: #393939;font:15px bold")
+        self.stream_pic_label_2.setStyleSheet("color: #393939;font:10px bold")
+        
+        # Added in for the machine learning
+        self.stream_pic_label_3 = QtWidgets.QLabel(self.stream_groupBox)
+        self.stream_pic_label_3.setGeometry(QtCore.QRect(10, 70, 31, 10))
+        self.stream_pic_label_3.setObjectName("stream_pic_label_3")
+        self.stream_pic_label_3.setStyleSheet("color: #393939;font:10px bold")
 
         self.stream_label_remote = QtWidgets.QLabel(self.stream_groupBox)
-        self.stream_label_remote.setGeometry(QtCore.QRect(50, 30, 131, 20))
+        self.stream_label_remote.setGeometry(QtCore.QRect(50, 30, 131, 10))
         self.stream_label_remote.setText("__._")
         self.stream_label_remote.setObjectName("stream_label")
-        self.stream_label_remote.setStyleSheet("color: #060606;font:20px bold")
+        self.stream_label_remote.setStyleSheet("color: #060606;font:15px bold")
 
         self.stream_label_local = QtWidgets.QLabel(self.stream_groupBox)
-        self.stream_label_local.setGeometry(QtCore.QRect(50, 60, 131, 20))
+        self.stream_label_local.setGeometry(QtCore.QRect(50, 50, 131, 10))
         self.stream_label_local.setText("__._")
         self.stream_label_local.setObjectName("stream_label_local")
-        self.stream_label_local.setStyleSheet("color: #060606;font:20px bold")
+        self.stream_label_local.setStyleSheet("color: #060606;font:15px bold")
+        
+        # Added in for the machine learning
+        self.stream_label_ml = QtWidgets.QLabel(self.stream_groupBox)
+        self.stream_label_ml.setGeometry(QtCore.QRect(50, 70, 131, 10))
+        self.stream_label_ml.setText("---")
+        self.stream_label_ml.setObjectName("stream_label_ml")
+        self.stream_label_ml.setStyleSheet("color: #060606;font:15px bold")
 
         self.Ers_unit_label = QtWidgets.QLabel(self.stream_groupBox)
-        self.Ers_unit_label.setGeometry(QtCore.QRect(115, 33, 131, 20))
+        self.Ers_unit_label.setGeometry(QtCore.QRect(115, 33, 131, 10))
         self.Ers_unit_label.setText("cmH<sub>2</sub>O/l")
         self.Ers_unit_label.setObjectName("Ers_unit_label")
-        self.Ers_unit_label.setStyleSheet("color: #393939;font:13px bold")
+        self.Ers_unit_label.setStyleSheet("color: #393939;font:8px bold")
 
         self.Rrs_unit_label = QtWidgets.QLabel(self.stream_groupBox)
-        self.Rrs_unit_label.setGeometry(QtCore.QRect(115, 63, 131, 20))
+        self.Rrs_unit_label.setGeometry(QtCore.QRect(115, 53, 131, 10))
         self.Rrs_unit_label.setText("cmH<sub>2</sub>O·s/l")
         self.Rrs_unit_label.setObjectName("Rrs_unit_label")
-        self.Rrs_unit_label.setStyleSheet("color: #393939;font:13px bold")
+        self.Rrs_unit_label.setStyleSheet("color: #393939;font:8px bold")
 
         MainWindow.setCentralWidget(self.centralwidget)
 
