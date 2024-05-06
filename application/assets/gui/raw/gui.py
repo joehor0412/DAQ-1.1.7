@@ -189,7 +189,7 @@ class Ui_MainWindow(object):
         
         # Added in for the machine learning
         self.stream_pic_label_3 = QtWidgets.QLabel(self.stream_groupBox)
-        self.stream_pic_label_3.setGeometry(QtCore.QRect(10, 70, 31, 10))
+        self.stream_pic_label_3.setGeometry(QtCore.QRect(10, 70, 51, 10))
         self.stream_pic_label_3.setObjectName("stream_pic_label_3")
         self.stream_pic_label_3.setStyleSheet("color: #393939;font:10px bold")
 
@@ -207,7 +207,7 @@ class Ui_MainWindow(object):
         
         # Added in for the machine learning
         self.stream_label_ml = QtWidgets.QLabel(self.stream_groupBox)
-        self.stream_label_ml.setGeometry(QtCore.QRect(50, 70, 131, 10))
+        self.stream_label_ml.setGeometry(QtCore.QRect(70, 70, 111, 10))
         self.stream_label_ml.setText("---")
         self.stream_label_ml.setObjectName("stream_label_ml")
         self.stream_label_ml.setStyleSheet("color: #060606;font:15px bold")
@@ -243,6 +243,7 @@ class Ui_MainWindow(object):
         self.stream_groupBox.setTitle(_translate("MainWindow", "Stream Status"))
         self.stream_pic_label.setText(_translate("MainWindow", "E<sub>rs</sub>:"))
         self.stream_pic_label_2.setText(_translate("MainWindow", "R<sub>rs</sub>:"))
+        self.stream_pic_label_3.setText(_translate("MainWindow", "MV Mode:"))
 
 from pyqtgraph import GraphicsLayoutWidget
 import assets.gui.raw.logo_rc
