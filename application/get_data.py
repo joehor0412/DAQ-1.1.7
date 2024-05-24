@@ -15,7 +15,7 @@ import keras
 from keras.models import load_model
 
 # Load in the model
-Model_DAQ = load_model(""/home/pi/Serial/model/Model_DAQ.h5"")
+Model_DAQ = load_model("/home/pi/Serial/model/Model_DAQ.h5")
 
 class Worker(QObject):
     """
