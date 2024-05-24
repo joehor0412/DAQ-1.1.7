@@ -14,6 +14,8 @@ import math
 import keras
 from keras.models import load_model
 
+# Load in the model
+Model_DAQ = load_model(""/home/pi/Serial/model/Model_DAQ.h5"")
 
 class Worker(QObject):
     """
@@ -41,13 +43,6 @@ class Worker(QObject):
 
     def __init__(self,patient_number,port_number,sio):
         super(Worker, self).__init__()
-        
-        # Goes to the directory of the model, load the model and come back to the current directory
-        current_path = os.getcwd()
-        os.chdir(cf.model_path)
-        self.Model = load_model("Model_DAQ")
-        os.chdir(current_path)
-        del current_path
         
         self._isRunning = True
         self.trigger = False # trigger to start loop collect data
@@ -236,7 +231,7 @@ class Worker(QObject):
         
         temp_P = self.resample_array(P[:cutoff_index], 180)
         temp_Q = self.resample_array(Q[:cutoff_index], 180)
-        result = self.Model.predict([temp_P, temp_Q])
+        result = Model_DAQ.predict([temp_P, temp_Q])
         
         if result[0] > result[1]:
             mv_mode = 0
