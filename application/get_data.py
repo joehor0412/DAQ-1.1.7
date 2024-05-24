@@ -41,6 +41,14 @@ class Worker(QObject):
 
     def __init__(self,patient_number,port_number,sio):
         super(Worker, self).__init__()
+        
+        # Goes to the directory of the model, load the model and come back to the current directory
+        current_path = os.getcwd()
+        os.chdir(cf.model_path)
+        self.Model = load_model("Model_DAQ")
+        os.chdir(current_path)
+        del current_path
+        
         self._isRunning = True
         self.trigger = False # trigger to start loop collect data
         self.patient_number = patient_number
@@ -118,9 +126,9 @@ class Worker(QObject):
                     # Respiratory mechanics calculation
                     try:
                         Ers, Rrs, PEEP, PIP, TidalVolume, IE, VE = self.calc_RM(sck_pressure,sck_flow)
-                        # mv_mode = self.calc_MV_mode(sck_pressure,sck_flow)      # produce the MV mode
-                        # self.RMs_display.emit([str(Ers),str(Rrs),mv_mode])
-                        self.RMs_display.emit([str(Ers),str(Rrs),breath_number])
+                        mv_mode = self.calc_MV_mode(sck_pressure,sck_flow)      # produce the MV mode
+                        self.RMs_display.emit([str(Ers),str(Rrs),mv_mode])
+                        # self.RMs_display.emit([str(Ers),str(Rrs),breath_number])
                         timenow = str(time.strftime("%d-%m-%y %H:%M:%S"))
                         # Try save in a text file
                         try:
@@ -205,23 +213,35 @@ class Worker(QObject):
        
 
         return Ers, Rrs, PEEP, PIP, TidalVolume, IE, VE
+
+    def resample_array(self, data, new_length):
+        """ Reshape the array to be 180 """
+        old_indices = np.linspace(0, len(data) - 1, len(data))
+        new_indices = np.linspace(0, len(data) - 1, new_length)
+        new_data = np.interp(new_indices, old_indices, data)
+        return new_data
     
     def calc_MV_mode(self, P, Q):
         """ Obtain the MV mode from the CNN """
-        current_path = os.getcwd()
-        os.chdir(model_path)
-        cnn_model = load_model("Model11")
-        os.chdir(current_path)
-        mv_mode = 1
+        mv_mode = None
         
         print(len(P))
         print(len(Q))
         
-        # results = cnn_model.predict([P,Q])
-        # if results.count(1) => results.count(0):
-        #       mv_mode = 1
-        # elif results.count(0) > results.count(1):
-        #       mv_mode = 0
+        # Have to cut the waveform and resize it to 1x180
+        for i in range(len(Q)):
+            if Q[i] < 0:
+                cutoff_index = i
+                break
+        
+        temp_P = self.resample_array(P[:cutoff_index], 180)
+        temp_Q = self.resample_array(Q[:cutoff_index], 180)
+        result = self.Model.predict([temp_P, temp_Q])
+        
+        if result[0] > result[1]:
+            mv_mode = 0
+        else:
+            mv_mode = 1
         
         return mv_mode
 
