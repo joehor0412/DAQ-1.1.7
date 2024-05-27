@@ -121,7 +121,7 @@ class Worker(QObject):
                     
                     # Respiratory mechanics calculation
                     try:
-                        if self.counter == 10:
+                        if self.counter == 15:
                             self.counter = 0        # reset the counter
                             # Ers, Rrs, PEEP, PIP, TidalVolume, IE, VE = self.calc_RM(sck_pressure,sck_flow)
                             Ers, Rrs = "N/A", "N/A"
@@ -242,9 +242,9 @@ class Worker(QObject):
         print("Can predict breath")
         
         if result[0] > result[1]:
-            mv_mode = 0
+            mv_mode = "PC"
         else:
-            mv_mode = 1
+            mv_mode = "VC"
             
         print("Can output result")
         print(f"MV mode is = {mv_mode}")
