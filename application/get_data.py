@@ -121,7 +121,7 @@ class Worker(QObject):
                     
                     # Respiratory mechanics calculation
                     try:
-                        if self.counter == 15:
+                        if self.counter == 40:
                             self.counter = 0        # reset the counter
                             # Ers, Rrs, PEEP, PIP, TidalVolume, IE, VE = self.calc_RM(sck_pressure,sck_flow)
                             Ers, Rrs = "N/A", "N/A"
