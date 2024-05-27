@@ -43,6 +43,8 @@ class Worker(QObject):
     def __init__(self,patient_number,port_number,sio):
         super(Worker, self).__init__()
         
+        self.counter = 0        # counter to calculate the MV mode, default to 10 breaths
+        
         self._isRunning = True
         self.trigger = False # trigger to start loop collect data
         self.patient_number = patient_number
@@ -119,17 +121,23 @@ class Worker(QObject):
                     
                     # Respiratory mechanics calculation
                     try:
-                        Ers, Rrs, PEEP, PIP, TidalVolume, IE, VE = self.calc_RM(sck_pressure,sck_flow)
-                        mv_mode = self.calc_MV_mode(sck_pressure,sck_flow)      # produce the MV mode
-                        self.RMs_display.emit([str(Ers),str(Rrs),mv_mode])
-                        # self.RMs_display.emit([str(Ers),str(Rrs),breath_number])
-                        timenow = str(time.strftime("%d-%m-%y %H:%M:%S"))
-                        # Try save in a text file
-                        try:
-                            with open("Mechanics.txt", "a+") as f:
-                                f.write(f"{timenow} - {breath_number} - {mv_mode} - {Ers},{Rrs},MV mode (PC=0,VC=1)\n")
-                        except:
-                            pass
+                        if self.counter == 10:
+                            self.counter = 0        # reset the counter
+                            # Ers, Rrs, PEEP, PIP, TidalVolume, IE, VE = self.calc_RM(sck_pressure,sck_flow)
+                            Ers, Rrs = "N/A", "N/A"
+                            mv_mode = self.calc_MV_mode(sck_pressure,sck_flow)      # produce the MV mode
+                            self.RMs_display.emit([Ers,Rrs,mv_mode])
+                            # self.RMs_display.emit([str(Ers),str(Rrs),mv_mode])
+                            # self.RMs_display.emit([str(Ers),str(Rrs),breath_number])
+                            timenow = str(time.strftime("%d-%m-%y %H:%M:%S"))
+                            # Try save in a text file
+                            try:
+                                with open("Mechanics.txt", "a+") as f:
+                                    f.write(f"{timenow} - {breath_number} - {mv_mode} - {Ers},{Rrs},MV mode (PC=0,VC=1)\n")
+                            except:
+                                pass
+                        else:
+                            self.counter += 1       # increment the counter
                     except:
                         pass
 
@@ -218,9 +226,7 @@ class Worker(QObject):
     def calc_MV_mode(self, P, Q):
         """ Obtain the MV mode from the CNN """
         mv_mode = None
-        
-        print(len(P))
-        print(len(Q))
+        print("In the calc MV mode function")
         
         # Have to cut the waveform and resize it to 1x180
         for i in range(len(Q)):
@@ -228,14 +234,20 @@ class Worker(QObject):
                 cutoff_index = i
                 break
         
+        print("Can identify cutoff index")
         temp_P = self.resample_array(P[:cutoff_index], 180)
         temp_Q = self.resample_array(Q[:cutoff_index], 180)
+        print("Can resize array")
         result = Model_DAQ.predict([temp_P, temp_Q])
+        print("Can predict breath")
         
         if result[0] > result[1]:
             mv_mode = 0
         else:
             mv_mode = 1
+            
+        print("Can output result")
+        print(f"MV mode is = {mv_mode}")
         
         return mv_mode
 
